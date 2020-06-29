@@ -134,7 +134,7 @@ class ElasticSearchPipeline(object):
         }
 
         if self.settings['ELASTICSEARCH_UNIQ_KEY'] is not None:
-            item_id = _id is None?self.get_id(item):_id
+            item_id = self.get_id(item) if _id is None else _id
             index_action['_id'] = item_id
             logging.debug('Generated unique key %s' % item_id)
 

@@ -125,6 +125,8 @@ class ElasticSearchPipeline(object):
         elif index_suffix_key:
             index_name += "-" + index_suffix_key
 
+        _id = item.pop('_id') if '_id' in item else None
+            
         index_action = {
             '_index': index_name,
             '_type': self.settings['ELASTICSEARCH_TYPE'],
@@ -132,7 +134,7 @@ class ElasticSearchPipeline(object):
         }
 
         if self.settings['ELASTICSEARCH_UNIQ_KEY'] is not None:
-            item_id = self.get_id(item)
+            item_id = _id is None?self.get_id(item):_id
             index_action['_id'] = item_id
             logging.debug('Generated unique key %s' % item_id)
 
